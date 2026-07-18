@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feed - Connectly</title>
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/layout.css" />
+  <link rel="stylesheet" href="../css/post.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <span class="navbar-logo">✨ Connectly</span>
+    <div class="navbar-actions">
+      <div class="navbar-user" id="navbarUser">
+        <div class="avatar avatar-sm" id="navAvatar"></div>
+        <span class="navbar-username" id="navUsername"></span>
+      </div>
+      <button class="btn btn-secondary" id="logoutBtn">Logout</button>
+    </div>
+  </nav>
+
+  <div class="page-container">
+    <!-- Create Post Box -->
+    <div class="card create-post-box">
+      <div class="create-post-header">
+        <div class="avatar avatar-md" id="createPostAvatar"></div>
+        <div class="create-post-input">
+          <textarea id="postContent" class="input" placeholder="What's on your mind?" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div id="imagePreviewWrap" class="image-preview-wrap hidden">
+        <img id="imagePreview" src="" alt="Preview" />
+        <button class="remove-image-btn" id="removeImageBtn">✕</button>
+      </div>
+
+      <div class="create-post-footer">
+        <label class="file-input-label">
+          📷 Add Photo
+          <input type="file" id="postImageInput" accept="image/*" class="hidden" />
+        </label>
+        <button class="btn btn-primary" id="submitPostBtn">Post</button>
+      </div>
+    </div>
+
+    <!-- Posts Feed -->
+    <div id="feedContainer">
+      <p class="text-muted" id="loadingText">Loading posts...</p>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/feed.js"></script>
+</body>
+</html>
