@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile - Connectly</title>
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/layout.css" />
+  <link rel="stylesheet" href="../css/post.css" />
+  <link rel="stylesheet" href="../css/profile.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+  <a href="feed.html" class="navbar-logo">✨ Connectly</a>
+
+  <div class="search-wrap">
+    <input type="text" id="searchInput" class="input search-input" placeholder="Search users..." autocomplete="off" />
+    <div class="search-results hidden" id="searchResults"></div>
+  </div>
+
+  <div class="navbar-actions">
+      <a href="feed.html" class="btn btn-secondary">← Feed</a>
+      <button class="btn btn-secondary" id="logoutBtn">Logout</button>
+    </div>
+  </nav>
+
+  <div class="page-container">
+    <!-- Profile Header -->
+    <div class="card profile-header" id="profileHeaderCard">
+      <p class="text-muted">Loading profile...</p>
+    </div>
+
+    <!-- Posts by this user -->
+    <div id="userPostsContainer"></div>
+  </div>
+
+ <script src="../js/api.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/search.js"></script>
+<script src="../js/profile.js"></script>
+</body>
+</html>

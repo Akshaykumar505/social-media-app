@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Notification = require('../models/Notification');
 const { asyncHandler } = require('../middleware/errorHandler');
 
 // Kisi bhi user ka public profile dekhna (username se)
@@ -40,6 +41,13 @@ const toggleFollow = asyncHandler(async (req, res) => {
     // Follow karna
     currentUser.following.push(targetUserId);
     targetUser.followers.push(currentUserId);
+
+    // Notification banao (sirf follow karte waqt, unfollow pe nahi)
+    await Notification.create({
+      recipient: targetUserId,
+      sender: currentUserId,
+      type: 'follow',
+    });
   }
 
   await currentUser.save();
@@ -66,4 +74,21 @@ const updateProfile = asyncHandler(async (req, res) => {
   res.json({ success: true, user });
 });
 
-module.exports = { getUserProfile, toggleFollow, updateProfile };
+// Username se users search karna (partial match, case-insensitive)
+const searchUsers = asyncHandler(async (req, res) => {
+  const query = req.query.q;
+
+  if (!query || query.trim() === '') {
+    return res.json({ success: true, users: [] });
+  }
+
+  const users = await User.find({
+    username: { $regex: query, $options: 'i' }, // 'i' = case-insensitive
+  })
+    .select('username fullName avatar bio')
+    .limit(10);
+
+  res.json({ success: true, users });
+});
+
+module.exports = { getUserProfile, toggleFollow, updateProfile, searchUsers };

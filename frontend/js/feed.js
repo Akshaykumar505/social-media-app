@@ -5,6 +5,9 @@ const currentUser = requireAuth();
 document.getElementById('navUsername').textContent = currentUser.username;
 document.getElementById('navAvatar').innerHTML = renderAvatarInner(currentUser);
 document.getElementById('createPostAvatar').innerHTML = renderAvatarInner(currentUser);
+document.getElementById('navbarUser').addEventListener('click', () => {
+  window.location.href = `profile.html?username=${currentUser.username}`;
+});
 
 document.getElementById('logoutBtn').addEventListener('click', logout);
 
@@ -20,7 +23,7 @@ function renderPostCard(post) {
       <div class="post-header">
         ${renderAvatar(post.author, 'avatar-md')}
         <div class="post-header-info">
-          <div class="post-author-name">${escapeHtml(post.author.fullName || post.author.username)}</div>
+          <a href="profile.html?username=${post.author.username}" class="post-author-name">${escapeHtml(post.author.fullName || post.author.username)}</a>
           <div class="post-time">${timeAgo(post.createdAt)}</div>
         </div>
         ${isOwner ? `<button class="post-menu-btn delete-post-btn" data-id="${post.id}">🗑️</button>` : ''}

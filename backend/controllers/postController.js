@@ -17,19 +17,24 @@ const createPost = asyncHandler(async (req, res) => {
   res.status(201).json({ success: true, post });
 });
 
-// Saare posts dekhna (feed) - sabse naye pehle
 const getFeed = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   const skip = (page - 1) * limit;
 
-  const posts = await Post.find()
+  // Agar URL me ?author=USER_ID diya hai, toh sirf usi user ke posts dikhao
+  const filter = {};
+  if (req.query.author) {
+    filter.author = req.query.author;
+  }
+
+  const posts = await Post.find(filter)
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit)
     .populate('author', 'username fullName avatar');
 
-  const total = await Post.countDocuments();
+  const total = await Post.countDocuments(filter);
 
   res.json({
     success: true,
