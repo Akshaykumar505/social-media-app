@@ -1,3 +1,4 @@
+const Notification = require('../models/Notification');
 const Post = require('../models/Post');
 const { asyncHandler } = require('../middleware/errorHandler');
 
@@ -117,6 +118,16 @@ const toggleLike = asyncHandler(async (req, res) => {
     post.likes.pull(req.user._id);
   } else {
     post.likes.push(req.user._id);
+
+    // Notification banao, but sirf tab jab koi doosre ka post like kare (khud ka nahi)
+    if (post.author.toString() !== userId) {
+      await Notification.create({
+        recipient: post.author,
+        sender: req.user._id,
+        type: 'like',
+        post: post._id,
+      });
+    }
   }
 
   await post.save();

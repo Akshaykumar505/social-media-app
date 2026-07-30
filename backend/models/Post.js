@@ -30,7 +30,7 @@ postSchema.virtual('comments', {
 });
 
 postSchema.virtual('likesCount').get(function () {
-  return this.likes.length;
+  return this.likes ? this.likes.length : 0;
 });
 
 postSchema.set('toJSON', { virtuals: true });

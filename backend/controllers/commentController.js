@@ -1,3 +1,4 @@
+const Notification = require('../models/Notification');
 const Comment = require('../models/Comment');
 const Post = require('../models/Post');
 const { asyncHandler } = require('../middleware/errorHandler');
@@ -20,6 +21,16 @@ const addComment = asyncHandler(async (req, res) => {
   });
 
   await comment.populate('author', 'username fullName avatar');
+
+  // Notification banao, sirf tab jab koi doosre ke post pe comment kare
+  if (post.author.toString() !== req.user._id.toString()) {
+    await Notification.create({
+      recipient: post.author,
+      sender: req.user._id,
+      type: 'comment',
+      post: post._id,
+    });
+  }
 
   res.status(201).json({ success: true, comment });
 });
