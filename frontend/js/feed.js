@@ -26,7 +26,7 @@ function renderPostCard(post) {
           <a href="profile.html?username=${post.author.username}" class="post-author-name">${escapeHtml(post.author.fullName || post.author.username)}</a>
           <div class="post-time">${timeAgo(post.createdAt)}</div>
         </div>
-        ${isOwner ? `<button class="post-menu-btn delete-post-btn" data-id="${post.id}">🗑️</button>` : ''}
+        ${isOwner ? `<button class="post-menu-btn delete-post-btn" data-id="${post.id}">⋮</button>` : ''}
       </div>
 
       <div class="post-content">${escapeHtml(post.content)}</div>

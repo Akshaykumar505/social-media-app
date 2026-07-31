@@ -62,7 +62,11 @@
 /* ===== POST CARD ===== */
 .post-card {
   padding: var(--space-lg);
-  margin-bottom: var(--space-lg);
+  margin-bottom: 24px;
+}
+
+.post-card:last-child {
+  margin-bottom: 0;
 }
 
 .post-header {
@@ -93,12 +97,16 @@
 .post-menu-btn {
   color: var(--text-muted);
   font-size: 20px;
-  padding: 4px 8px;
-  border-radius: var(--radius-sm);
+  font-weight: 700;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: var(--radius-full);
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .post-menu-btn:hover {
   background: var(--bg-hover);
+  color: var(--color-danger);
 }
 
 .post-content {
@@ -130,6 +138,7 @@
 .post-actions {
   display: flex;
   gap: var(--space-sm);
+  padding-top: 4px;
 }
 
 .post-action-btn {
@@ -138,24 +147,26 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 8px;
-  border-radius: var(--radius-sm);
+  padding: 10px;
+  border-radius: var(--radius-md);
   font-size: 14px;
   font-weight: 600;
   color: var(--text-secondary);
-  transition: background 0.15s ease, color 0.15s ease;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .post-action-btn:hover {
   background: var(--bg-hover);
+  border-color: var(--accent-violet);
+  color: var(--text-primary);
 }
 
 .post-action-btn.liked {
   color: var(--accent-coral);
-}
-
-.post-action-btn.liked svg {
-  fill: var(--accent-coral);
+  border-color: var(--accent-coral);
+  background: rgba(255, 107, 107, 0.1);
 }
 
 /* ===== COMMENTS ===== */
