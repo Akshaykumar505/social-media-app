@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="../css/base.css" />
   <link rel="stylesheet" href="../css/components.css" />
   <link rel="stylesheet" href="../css/layout.css" />
-  <link rel="stylesheet" href="../css/post.css" />
+  <link rel="stylesheet" href="../css/notifications.css" />
 </head>
 <body>
   <!-- Navbar -->
@@ -21,12 +21,23 @@
   </div>
 
   <div class="navbar-actions">
-      <div class="navbar-user" id="navbarUser">
-        <div class="avatar avatar-sm" id="navAvatar"></div>
-        <span class="navbar-username" id="navUsername"></span>
-      </div>
-      <button class="btn btn-secondary" id="logoutBtn">Logout</button>
+  <div class="notif-bell-wrap">
+    <button class="notif-bell-btn" id="notifBellBtn">
+      🔔
+      <span class="notif-badge hidden" id="notifBadge">0</span>
+    </button>
+    <div class="notif-dropdown hidden" id="notifDropdown">
+      <div class="notif-dropdown-header">Notifications</div>
+      <div id="notifList"></div>
     </div>
+  </div>
+
+  <div class="navbar-user" id="navbarUser">
+    <div class="avatar avatar-sm" id="navAvatar"></div>
+    <span class="navbar-username" id="navUsername"></span>
+  </div>
+  <button class="btn btn-secondary" id="logoutBtn">Logout</button>
+</div>
   </nav>
 
   <div class="page-container">
@@ -62,6 +73,7 @@
 <script src="../js/api.js"></script>
 <script src="../js/utils.js"></script>
 <script src="../js/search.js"></script>
+<script src="../js/notifications.js"></script>
 <script src="../js/feed.js"></script>
 </body>
 </html>
