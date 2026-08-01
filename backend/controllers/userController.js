@@ -91,4 +91,17 @@ const searchUsers = asyncHandler(async (req, res) => {
   res.json({ success: true, users });
 });
 
-module.exports = { getUserProfile, toggleFollow, updateProfile, searchUsers };
+// Follow karne ke liye suggested users (jo khud nahi hain aur already follow nahi kiye)
+const getSuggestedUsers = asyncHandler(async (req, res) => {
+  const currentUser = await User.findById(req.user._id);
+
+  const excludeIds = [req.user._id, ...currentUser.following];
+
+  const suggestions = await User.find({ _id: { $nin: excludeIds } })
+    .select('username fullName avatar')
+    .limit(5);
+
+  res.json({ success: true, users: suggestions });
+});
+
+module.exports = { getUserProfile, toggleFollow, updateProfile, searchUsers, getSuggestedUsers };

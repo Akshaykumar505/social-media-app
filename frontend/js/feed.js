@@ -9,6 +9,44 @@ document.getElementById('navbarUser').addEventListener('click', () => {
   window.location.href = `profile.html?username=${currentUser.username}`;
 });
 
+// Left sidebar - apni profile info dikhana
+document.getElementById('sidebarAvatar').innerHTML = renderAvatarInner(currentUser);
+document.getElementById('sidebarName').textContent = currentUser.fullName || currentUser.username;
+document.getElementById('sidebarUsername').textContent = '@' + currentUser.username;
+document.getElementById('sidebarProfileLink').href = `profile.html?username=${currentUser.username}`;
+
+// Right sidebar - suggested users load karna
+async function loadSuggestions() {
+  const container = document.getElementById('suggestionsList');
+  try {
+    const data = await api.get('/users/suggestions');
+
+    if (data.users.length === 0) {
+      container.innerHTML = '<p class="text-muted" style="font-size:13px;">No suggestions right now</p>';
+      return;
+    }
+
+    container.innerHTML = data.users
+      .map(
+        (user) => `
+      <div class="suggestion-item">
+        <a href="profile.html?username=${user.username}">${renderAvatar(user, 'avatar-sm')}</a>
+        <div class="suggestion-info">
+          <a href="profile.html?username=${user.username}" class="suggestion-name">${escapeHtml(user.fullName || user.username)}</a>
+          <div class="suggestion-username">@${escapeHtml(user.username)}</div>
+        </div>
+        <button class="btn btn-primary suggestion-follow-btn" data-id="${user.id}">Follow</button>
+      </div>
+    `
+      )
+      .join('');
+  } catch (error) {
+    container.innerHTML = '<p class="text-muted" style="font-size:13px;">Failed to load</p>';
+  }
+}
+
+loadSuggestions();
+
 document.getElementById('logoutBtn').addEventListener('click', logout);
 
 const feedContainer = document.getElementById('feedContainer');
@@ -224,3 +262,20 @@ async function loadComments(postId) {
     list.innerHTML = `<p class="error-text">Failed to load comments</p>`;
   }
 }
+
+// Suggestions ke Follow buttons ke liye alag listener (kyunki wo feedContainer ke bahar hain)
+document.getElementById('suggestionsList').addEventListener('click', async (e) => {
+  const btn = e.target.closest('.suggestion-follow-btn');
+  if (!btn) return;
+
+  const userId = btn.dataset.id;
+  btn.disabled = true;
+
+  try {
+    await api.put(`/users/follow/${userId}`, {});
+    btn.closest('.suggestion-item').remove(); // follow karte hi list se hata do
+  } catch (error) {
+    alert('Failed to follow: ' + error.message);
+    btn.disabled = false;
+  }
+});
