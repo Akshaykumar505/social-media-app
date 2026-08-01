@@ -1,8 +1,8 @@
+const Post = require('../models/Post');
 const User = require('../models/User');
 const Notification = require('../models/Notification');
 const { asyncHandler } = require('../middleware/errorHandler');
 
-// Kisi bhi user ka public profile dekhna (username se)
 const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findOne({ username: req.params.username });
 
@@ -11,7 +11,13 @@ const getUserProfile = asyncHandler(async (req, res) => {
     throw new Error('User not found');
   }
 
-  res.json({ success: true, user });
+  const postsCount = await Post.countDocuments({ author: user._id });
+
+  // user object ko plain object me convert karke postsCount add karna
+  const userData = user.toObject();
+  userData.postsCount = postsCount;
+
+  res.json({ success: true, user: userData });
 });
 
 // Kisi user ko follow ya unfollow karna (toggle)

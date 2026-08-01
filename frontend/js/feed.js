@@ -15,6 +15,20 @@ document.getElementById('sidebarName').textContent = currentUser.fullName || cur
 document.getElementById('sidebarUsername').textContent = '@' + currentUser.username;
 document.getElementById('sidebarProfileLink').href = `profile.html?username=${currentUser.username}`;
 
+// Sidebar ke stats (posts/followers/following) load karna
+async function loadSidebarStats() {
+  try {
+    const data = await api.get(`/users/${currentUser.username}`);
+    document.getElementById('statPosts').textContent = data.user.postsCount ?? 0;
+    document.getElementById('statFollowers').textContent = data.user.followersCount ?? 0;
+    document.getElementById('statFollowing').textContent = data.user.followingCount ?? 0;
+  } catch (error) {
+    console.error('Failed to load sidebar stats:', error);
+  }
+}
+
+loadSidebarStats();
+
 // Right sidebar - suggested users load karna
 async function loadSuggestions() {
   const container = document.getElementById('suggestionsList');

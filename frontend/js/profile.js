@@ -2,6 +2,74 @@ const currentUser = requireAuth();
 
 document.getElementById('logoutBtn').addEventListener('click', logout);
 
+// Left sidebar - apni profile info dikhana
+document.getElementById('sidebarAvatar').innerHTML = renderAvatarInner(currentUser);
+document.getElementById('sidebarName').textContent = currentUser.fullName || currentUser.username;
+document.getElementById('sidebarUsername').textContent = '@' + currentUser.username;
+document.getElementById('sidebarProfileLink').href = `profile.html?username=${currentUser.username}`;
+
+// Sidebar ke stats (posts/followers/following) load karna
+async function loadSidebarStats() {
+  try {
+    const data = await api.get(`/users/${currentUser.username}`);
+    document.getElementById('statPosts').textContent = data.user.postsCount ?? 0;
+    document.getElementById('statFollowers').textContent = data.user.followersCount ?? 0;
+    document.getElementById('statFollowing').textContent = data.user.followingCount ?? 0;
+  } catch (error) {
+    console.error('Failed to load sidebar stats:', error);
+  }
+}
+
+loadSidebarStats();
+
+// Right sidebar - suggested users
+async function loadSuggestions() {
+  const container = document.getElementById('suggestionsList');
+  try {
+    const data = await api.get('/users/suggestions');
+
+    if (data.users.length === 0) {
+      container.innerHTML = '<p class="text-muted" style="font-size:13px;">No suggestions right now</p>';
+      return;
+    }
+
+    container.innerHTML = data.users
+      .map(
+        (user) => `
+      <div class="suggestion-item">
+        <a href="profile.html?username=${user.username}">${renderAvatar(user, 'avatar-sm')}</a>
+        <div class="suggestion-info">
+          <a href="profile.html?username=${user.username}" class="suggestion-name">${escapeHtml(user.fullName || user.username)}</a>
+          <div class="suggestion-username">@${escapeHtml(user.username)}</div>
+        </div>
+        <button class="btn btn-primary suggestion-follow-btn" data-id="${user.id}">Follow</button>
+      </div>
+    `
+      )
+      .join('');
+  } catch (error) {
+    container.innerHTML = '<p class="text-muted" style="font-size:13px;">Failed to load</p>';
+  }
+}
+
+loadSuggestions();
+
+document.getElementById('suggestionsList').addEventListener('click', async (e) => {
+  const btn = e.target.closest('.suggestion-follow-btn');
+  if (!btn) return;
+
+  const userId = btn.dataset.id;
+  btn.disabled = true;
+
+  try {
+    await api.put(`/users/follow/${userId}`, {});
+    btn.closest('.suggestion-item').remove();
+  } catch (error) {
+    alert('Failed to follow: ' + error.message);
+    btn.disabled = false;
+  }
+});
+
 // URL se username nikalna, jaise profile.html?username=testuser
 const params = new URLSearchParams(window.location.search);
 const profileUsername = params.get('username') || currentUser.username;

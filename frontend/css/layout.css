@@ -138,6 +138,31 @@
   margin-bottom: var(--space-md);
 }
 
+.mini-profile-stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  margin-bottom: var(--space-md);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.mini-stat {
+  text-align: center;
+}
+
+.mini-stat-value {
+  font-weight: 700;
+  font-size: 15px;
+  display: block;
+}
+
+.mini-stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
 .sidebar-links {
   margin-top: var(--space-md);
 }
