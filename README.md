@@ -34,3 +34,91 @@ A full-stack social media web app with user profiles, posts, comments, likes, an
 ---
 
 ## 📁 Project Structure
+social-media-app/
+├── backend/
+│ ├── config/ # Database connection
+│ ├── models/ # Mongoose schemas (User, Post, Comment, Notification)
+│ ├── controllers/ # Route logic
+│ ├── routes/ # API endpoints
+│ ├── middleware/ # Auth guard, validation, error handling, file upload
+│ ├── utils/ # Helper functions (JWT generation)
+│ ├── uploads/ # Uploaded post images
+│ └── server.js # App entry point
+└── frontend/
+├── css/ # Design system + page styles
+├── js/ # Page logic (API calls, DOM handling)
+└── pages/ # HTML pages (login, register, feed, profile)
+
+---
+
+## ⚙️ Setup & Installation
+
+### 1. Clone the repo
+```bash
+git clone https://github.com/Akshaykumar505/social-media-app.git
+cd social-media-app
+```
+
+### 2. Backend Setup
+```bash
+cd backend
+npm install
+```
+
+Create a `.env` file in the `backend` folder:
+```env
+PORT=5000
+NODE_ENV=development
+MONGO_URI=your_mongodb_atlas_connection_string
+JWT_SECRET=your_secret_key
+JWT_EXPIRES_IN=7d
+CLIENT_URL=http://127.0.0.1:5500
+```
+
+Start the server:
+```bash
+node server.js
+```
+
+### 3. Frontend Setup
+Open `frontend/pages/login.html` using VS Code's **Live Server** extension.
+
+---
+
+## 📡 API Endpoints
+
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| POST | `/api/auth/register` | Register a new user | ❌ |
+| POST | `/api/auth/login` | Login | ❌ |
+| GET | `/api/auth/me` | Get current user | ✅ |
+| GET | `/api/users/search?q=` | Search users | ❌ |
+| GET | `/api/users/suggestions` | Get suggested users | ✅ |
+| GET | `/api/users/:username` | Get user profile | ❌ |
+| PUT | `/api/users/profile` | Update own profile | ✅ |
+| PUT | `/api/users/follow/:id` | Follow/unfollow a user | ✅ |
+| GET | `/api/posts` | Get feed (paginated) | ❌ |
+| POST | `/api/posts` | Create a post | ✅ |
+| PUT | `/api/posts/:id` | Edit own post | ✅ |
+| DELETE | `/api/posts/:id` | Delete own post | ✅ |
+| PUT | `/api/posts/:id/like` | Like/unlike a post | ✅ |
+| GET | `/api/posts/:postId/comments` | Get comments on a post | ❌ |
+| POST | `/api/posts/:postId/comments` | Add a comment | ✅ |
+| GET | `/api/notifications` | Get notifications | ✅ |
+| PUT | `/api/notifications/read` | Mark all as read | ✅ |
+
+---
+
+## 🔒 Security Practices
+
+- Passwords hashed with bcrypt (never stored in plain text)
+- JWT-based authentication with token expiry
+- Input validation on all write endpoints
+- User can only edit/delete their own content
+- File upload restricted to image types, 5MB max
+
+---
+
+## 👨‍💻 Author
+
+Built by **Akshaykumar505** as a learning project — full-stack development from scratch.
