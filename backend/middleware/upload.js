@@ -1,33 +1,26 @@
 const multer = require('multer');
-const path = require('path');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('cloudinary').v2;
 
-// Post images kaha aur kis naam se save hongi, wo define karta hai
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/posts');
-  },
-  filename: (req, file, cb) => {
-    // Unique filename: timestamp + original extension (taaki naam clash na ho)
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
+// Cloudinary ko apni account details se configure karna
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Ab images local folder ki jagah seedha Cloudinary pe upload hongi
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'social-media-app/posts', // Cloudinary pe is folder ke andar save hongi
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'gif'],
+    transformation: [{ width: 1200, crop: 'limit' }], // bahut badi images ko automatically resize kar dega
   },
 });
 
-// Sirf images allow karna (security ke liye)
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = /jpeg|jpg|png|webp|gif/;
-  const isValid = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-
-  if (isValid) {
-    cb(null, true);
-  } else {
-    cb(new Error('Only image files are allowed (jpeg, jpg, png, webp, gif)'), false);
-  }
-};
-
 const upload = multer({
   storage,
-  fileFilter,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
 });
 

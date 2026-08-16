@@ -9,10 +9,9 @@ const createPost = asyncHandler(async (req, res) => {
   const post = await Post.create({
     author: req.user._id,
     content,
-    image: req.file ? `/uploads/posts/${req.file.filename}` : '',
+    image: req.file ? req.file.path : '', // Cloudinary ka poora URL milta hai
   });
 
-  // author ka data (username, avatar) bhi saath me bhejna, taaki frontend ko alag query na karni pade
   await post.populate('author', 'username fullName avatar');
 
   res.status(201).json({ success: true, post });

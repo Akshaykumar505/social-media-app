@@ -221,7 +221,7 @@ async function loadUserPosts() {
           </div>
         </div>
         <div class="post-content">${escapeHtml(post.content)}</div>
-        ${post.image ? `<img src="http://localhost:5000${post.image}" class="post-image" alt="post" />` : ''}
+        ${post.image ? `<img src="${post.image}" class="post-image" alt="post" />` : ''}
         <div class="post-stats">
           <span>${post.likesCount || 0} likes</span>
         </div>

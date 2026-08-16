@@ -1,6 +1,6 @@
 // Backend server ka base URL
+// Local development me localhost use hoga, deploy hone ke baad ye URL badal denge
 const API_BASE = 'http://localhost:5000/api';
-
 /**
  * Common function jo har API call ke liye use hoga.
  * Automatically token attach karta hai agar user logged in hai.
