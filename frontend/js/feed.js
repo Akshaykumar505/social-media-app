@@ -187,20 +187,23 @@ if (!content && !hasImage) {
 feedContainer.addEventListener('click', async (e) => {
   // LIKE button
   if (e.target.closest('.like-btn')) {
-    const btn = e.target.closest('.like-btn');
-    const postId = btn.dataset.id;
+  const btn = e.target.closest('.like-btn');
+  const postId = btn.dataset.id;
 
-    try {
-      const data = await api.put(`/posts/${postId}/like`, {});
-      btn.classList.toggle('liked', data.isLiked);
-      btn.innerHTML = `${data.isLiked ? '❤️' : '🤍'} Like`;
+  try {
+    const data = await api.put(`/posts/${postId}/like`, {});
+    btn.classList.toggle('liked', data.isLiked);
+    btn.innerHTML = `${data.isLiked ? '❤️' : '🤍'} Like`;
 
-      const statsSpan = btn.closest('.post-card').querySelector('.post-stats span');
+    // data-post-id se seedha post card dhoondna, DOM navigation pe depend na karna
+    const statsSpan = document.querySelector(`[data-post-id="${postId}"] .post-stats span`);
+    if (statsSpan) {
       statsSpan.textContent = `${data.likesCount} likes`;
-    } catch (error) {
-      alert('Failed to like post: ' + error.message);
     }
+  } catch (error) {
+    alert('Failed to like post: ' + error.message);
   }
+}
 
   // COMMENT toggle button
   if (e.target.closest('.toggle-comments-btn')) {
