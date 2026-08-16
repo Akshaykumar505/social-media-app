@@ -84,6 +84,8 @@ function renderPostCard(post) {
       <div class="post-content">${escapeHtml(post.content)}</div>
 
       ${post.image ? `<img src="${post.image}" class="post-image" alt="post image" />` : ''}
+
+      <div class="post-stats">
         <span>${post.likesCount || 0} likes</span>
         <span class="comment-count-text">0 comments</span>
       </div>
