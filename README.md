@@ -1,5 +1,7 @@
 # ✨ Connectly — Mini Social Media Platform
 
+**🔗 Live Demo:** [social-media-app-iota-five.vercel.app](https://social-media-app-iota-five.vercel.app/pages/login.html)
+
 A full-stack social media web app with user profiles, posts, comments, likes, and a follow system — built from scratch with Express.js, MongoDB, and vanilla JavaScript.
 
 ![Node.js](https://img.shields.io/badge/Node.js-Express.js-green)
@@ -13,7 +15,7 @@ A full-stack social media web app with user profiles, posts, comments, likes, an
 - 🔐 **Authentication** — Register/Login with JWT tokens, bcrypt password hashing
 - 👤 **User Profiles** — View & edit profile (bio, full name, avatar)
 - 🤝 **Follow System** — Follow/unfollow other users
-- 📝 **Posts** — Create posts with text and/or image upload
+- 📝 **Posts** — Create posts with text and/or image upload (stored on Cloudinary)
 - ❤️ **Likes** — Like/unlike posts
 - 💬 **Comments** — Comment on posts
 - 🔍 **Search** — Search users by username
@@ -25,11 +27,13 @@ A full-stack social media web app with user profiles, posts, comments, likes, an
 
 ## 🛠️ Tech Stack
 
-**Backend:** Node.js, Express.js, MongoDB, Mongoose, JWT, bcryptjs, Multer, express-validator
+**Backend:** Node.js, Express.js, MongoDB, Mongoose, JWT, bcryptjs, Multer, Cloudinary, express-validator
 
 **Frontend:** HTML5, CSS3 (custom design system), Vanilla JavaScript (no frameworks)
 
 **Database:** MongoDB Atlas (cloud)
+
+**Deployment:** Render (backend) · Vercel (frontend) · MongoDB Atlas (database) · Cloudinary (image storage)
 
 ---
 
@@ -42,7 +46,6 @@ social-media-app/
 │ ├── routes/ # API endpoints
 │ ├── middleware/ # Auth guard, validation, error handling, file upload
 │ ├── utils/ # Helper functions (JWT generation)
-│ ├── uploads/ # Uploaded post images
 │ └── server.js # App entry point
 └── frontend/
 ├── css/ # Design system + page styles
@@ -51,7 +54,7 @@ social-media-app/
 
 ---
 
-## ⚙️ Setup & Installation
+## ⚙️ Setup & Installation (Run Locally)
 
 ### 1. Clone the repo
 ```bash
@@ -73,6 +76,9 @@ MONGO_URI=your_mongodb_atlas_connection_string
 JWT_SECRET=your_secret_key
 JWT_EXPIRES_IN=7d
 CLIENT_URL=http://127.0.0.1:5500
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 ```
 
 Start the server:
@@ -82,6 +88,8 @@ node server.js
 
 ### 3. Frontend Setup
 Open `frontend/pages/login.html` using VS Code's **Live Server** extension.
+
+> Note: `frontend/js/api.js` currently points to the deployed Render backend. To run fully locally, change `API_BASE` back to `http://localhost:5000/api`.
 
 ---
 
@@ -115,10 +123,10 @@ Open `frontend/pages/login.html` using VS Code's **Live Server** extension.
 - JWT-based authentication with token expiry
 - Input validation on all write endpoints
 - User can only edit/delete their own content
-- File upload restricted to image types, 5MB max
+- File upload restricted to image types, 5MB max, stored on Cloudinary (not the server disk)
 
 ---
 
 ## 👨‍💻 Author
 
-Built by **Akshaykumar505** as a learning project — full-stack development from scratch.
+Built by **Akshaykumar505** as a learning project — full-stack development from scratch, including deployment.
